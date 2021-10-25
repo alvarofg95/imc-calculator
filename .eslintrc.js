@@ -6,13 +6,16 @@ module.exports = {
   },
   "extends": [
     "eslint:recommended",
-    "plugin:react/recommended"
+    "plugin:react/recommended",
   ],
+  "parser": "@babel/eslint-parser",
   "parserOptions": {
-    "ecmaVersion": 6,
+    "ecmaVersion": 8,
+    "requireConfigFile": false,
     "sourceType": "module",
     "ecmaFeatures": {
-      "jsx": true
+      "jsx": true,
+      "experimentalObjectRestSpread": true
     }
   },
   "plugins": [
@@ -35,5 +38,5 @@ module.exports = {
         "ignoreClassNames": false,
         "ignoreStyleProperties": false
       }]
-  }
+  },
 };
