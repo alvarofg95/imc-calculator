@@ -1,5 +1,6 @@
 import React, { useReducer } from 'react';
-import { Text, TextInput, SafeAreaView, StyleSheet } from 'react-native';
+import { Text, TextInput, SafeAreaView, View, StyleSheet, KeyboardAvoidingView, Keyboard } from 'react-native';
+import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import SwitchableButtons from '../components/SwitchableButtons';
 
 const initialState = {
@@ -32,37 +33,85 @@ const HomeScreen = () => {
   }
 
   return (
-    <SafeAreaView style={styles.container}>
-      <Text>Altura</Text>
-      <TextInput
-        value={state.height}
-        keyboardType="numeric"
-        onChangeText={(value) => onChangeInput('height', value)}
-      />
+    <KeyboardAvoidingView>
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <SafeAreaView style={styles.container}>
+          <Text style={styles.header}>Calculadora IMC</Text>
 
-      <Text>Peso</Text>
-      <TextInput
-        keyboardType="numeric"
-        value={state.weight}
-        onChangeText={(value) => onChangeInput('weight', value)}
-      />
-
-      <Text>Edad</Text>
-      <TextInput
-        keyboardType="numeric"
-        value={state.age}
-        onChangeText={(value) => onChangeInput('age', value)}
-      />
-
-      <Text>Sexo</Text>
-      <SwitchableButtons value={state.gender} onChange={(value) => onChangeInput('gender', value)} />
-    </SafeAreaView>
+          <View style={styles.inputContainer}>
+            <Text style={styles.label}>Altura</Text>
+            <TextInput
+              value={state.height}
+              keyboardType="numeric"
+              style={styles.input}
+              onChangeText={(value) => onChangeInput('height', value)}
+            />
+            <Text style={styles.label}>cm</Text>
+          </View>
+          <View style={styles.inputContainer}>
+            <Text style={styles.label}>Peso</Text>
+            <TextInput
+              value={state.weight}
+              keyboardType="numeric"
+              style={styles.input}
+              onChangeText={(value) => onChangeInput('weight', value)}
+            />
+            <Text style={styles.label}>kg</Text>
+          </View>
+          <View style={styles.inputContainer}>
+            <Text style={styles.label}>Edad</Text>
+            <TextInput
+              value={state.age}
+              keyboardType="numeric"
+              style={styles.input}
+              onChangeText={(value) => onChangeInput('age', value)}
+            />
+            <Text style={styles.label}></Text>
+          </View>
+          <View style={styles.inputContainer}>
+            <Text style={styles.label}>Sexo</Text>
+            <SwitchableButtons value={state.gender} onChange={(value) => onChangeInput('gender', value)} />
+          </View>
+        </SafeAreaView>
+      </TouchableWithoutFeedback>
+    </KeyboardAvoidingView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#1234'
+    backgroundColor: '#66D7D1',
+    width: '100%',
+    height: '100%'
+  },
+  header: {
+    marginTop: 30,
+    marginBottom: 30,
+    fontSize: 40,
+    textAlign: 'center',
+    fontFamily: 'TitilliumWeb_600SemiBold',
+    color: '#F4F1BB',
+  },
+  inputContainer: {
+    paddingTop: 30,
+    flexDirection: 'row',
+    justifyContent: 'space-around'
+  },
+  label: {
+    fontSize: 28,
+    fontFamily: 'TitilliumWeb_600SemiBold',
+    width: '35%',
+    textAlign: 'center'
+  },
+  input: {
+    backgroundColor: '#F4F1BB',
+    width: '30%',
+    paddingLeft: 5,
+    paddingRight: 5,
+    fontSize: 20,
+    borderRadius: 10,
+    textAlign: 'center',
+    fontFamily: 'TitilliumWeb_600SemiBold',
   }
 })
 

@@ -24,14 +24,10 @@ const SwitchableButtons = ({ value = null, onChange }) => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     flexDirection: 'row',
-    flexWrap: 'wrap',
     justifyContent: 'space-around',
-    height: 300,
-    width: 300,
-    backgroundColor: '#000',
-    position: 'relative'
+    width: '60%'
+    // backgroundColor: '#000',
   },
   button: {
     height: 60,

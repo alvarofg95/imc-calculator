@@ -8,9 +8,13 @@
     "eject": "expo eject"
   },
   "dependencies": {
+    "@expo-google-fonts/titillium-web": "^0.2.0",
     "@react-navigation/drawer": "^6.1.8",
     "@react-navigation/native": "^6.0.6",
-    "expo": "~42.0.1",
+    "@react-navigation/stack": "^6.0.11",
+    "expo": "^41.0.0",
+    "expo-app-loading": "^1.0.3",
+    "expo-font": "~9.1.0",
     "expo-status-bar": "~1.0.4",
     "react": "16.13.1",
     "react-dom": "16.13.1",
