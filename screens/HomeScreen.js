@@ -1,13 +1,15 @@
 import React, { useReducer } from 'react';
 import { Text, TextInput, SafeAreaView, View, StyleSheet, KeyboardAvoidingView, Keyboard } from 'react-native';
-import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
+import { TouchableOpacity, TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import SwitchableButtons from '../components/SwitchableButtons';
+import { calculateBmi } from '../utils/calculator';
 
 const initialState = {
   age: null,
   height: null,
   gender: null,
   weight: null,
+  result: null,
 }
 
 const reducer = (state, action) => {
@@ -29,6 +31,17 @@ const HomeScreen = () => {
       type: 'CHANGE',
       value,
       key,
+    })
+  }
+
+  const onSubmit = () => {
+    console.log('AKI')
+    const result = calculateBmi(state);
+    console.log('RESULT', result)
+    dispatch({
+      type: 'CHANGE',
+      result,
+      key: 'result',
     })
   }
 
@@ -72,6 +85,11 @@ const HomeScreen = () => {
             <Text style={styles.label}>Sexo</Text>
             <SwitchableButtons value={state.gender} onChange={(value) => onChangeInput('gender', value)} />
           </View>
+
+          <TouchableOpacity onPress={onSubmit}>
+            <Text>Calcular</Text>
+          </TouchableOpacity>
+          {state.result && state.result.result}
         </SafeAreaView>
       </TouchableWithoutFeedback>
     </KeyboardAvoidingView>
