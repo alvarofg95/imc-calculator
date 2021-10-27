@@ -1,13 +1,9 @@
 import React from 'react';
-import { View, StyleSheet, Text } from 'react-native';
+import { View, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import PropTypes from 'prop-types';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 
 const SwitchableButtons = ({ value = null, onChange }) => {
-  console.log('HERE', value)
-
   const getStyles = (key) => {
-    console.log('getStylesss', key)
     return key === value ? { ...styles.button, ...styles.activeButton } : styles.button;
   };
 

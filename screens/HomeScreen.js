@@ -1,6 +1,7 @@
 import React, { useReducer } from 'react';
-import { Text, TextInput, SafeAreaView, View, StyleSheet, KeyboardAvoidingView, Keyboard } from 'react-native';
-import { TouchableOpacity, TouchableWithoutFeedback } from 'react-native-gesture-handler';
+import { Text, TextInput, TouchableOpacity, TouchableWithoutFeedback, View, StyleSheet, KeyboardAvoidingView, Keyboard } from 'react-native';
+import ErrorMessage from '../components/ErrorMessage';
+import Result from '../components/Result';
 import SwitchableButtons from '../components/SwitchableButtons';
 import { calculateBmi } from '../utils/calculator';
 
@@ -9,7 +10,11 @@ const initialState = {
   height: null,
   gender: null,
   weight: null,
-  result: null,
+  result: {
+    bmiValue: null,
+    result: null,
+  },
+  error: null,
 }
 
 const reducer = (state, action) => {
@@ -17,14 +22,36 @@ const reducer = (state, action) => {
     return {
       ...state,
       [action.key]: action.value,
+      error: null,
+    };
+  } else if (action.type === 'CLEAR') {
+    return initialState;
+  } else if (action.type === 'SHOW_ERROR') {
+    return {
+      ...state,
+      error: action.value,
     };
   }
   return state;
 }
 
+const getErrorType = (height, weight) => {
+  let errorType = '';
+  if (!height) {
+    errorType = 'heightError';
+  }
+  if (!weight) {
+    errorType = 'weightError';
+  }
+  if (!height && !weight) {
+    errorType = 'heightAndWeightError';
+  }
+  console.log('ERROR TYPE', errorType)
+  return errorType;
+}
+
 const HomeScreen = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
-  console.log({ state })
 
   const onChangeInput = (key, value) => {
     dispatch({
@@ -35,26 +62,48 @@ const HomeScreen = () => {
   }
 
   const onSubmit = () => {
-    console.log('AKI')
-    const result = calculateBmi(state);
-    console.log('RESULT', result)
+    const { height, weight } = state;
+    if (height && weight) {
+      const result = calculateBmi(state);
+      dispatch({
+        type: 'CHANGE',
+        value: result,
+        key: 'result',
+      });
+    } else {
+      dispatch({
+        type: 'SHOW_ERROR',
+        value: getErrorType(height, weight),
+      });
+    }
+  }
+
+  const onClear = () => {
     dispatch({
-      type: 'CHANGE',
-      result,
-      key: 'result',
+      type: 'CLEAR',
     })
   }
 
+  const {
+    height,
+    weight,
+    age,
+    gender,
+    result,
+    error,
+  } = state;
+  const mustShowClear = !!result.bmiValue;
+  console.log('error', error);
   return (
-    <KeyboardAvoidingView>
+    <KeyboardAvoidingView style={styles.container}>
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <SafeAreaView style={styles.container}>
+        <View>
           <Text style={styles.header}>Calculadora IMC</Text>
 
           <View style={styles.inputContainer}>
-            <Text style={styles.label}>Altura</Text>
+            <Text style={styles.label}>Altura*</Text>
             <TextInput
-              value={state.height}
+              value={height}
               keyboardType="numeric"
               style={styles.input}
               onChangeText={(value) => onChangeInput('height', value)}
@@ -62,9 +111,9 @@ const HomeScreen = () => {
             <Text style={styles.label}>cm</Text>
           </View>
           <View style={styles.inputContainer}>
-            <Text style={styles.label}>Peso</Text>
+            <Text style={styles.label}>Peso*</Text>
             <TextInput
-              value={state.weight}
+              value={weight}
               keyboardType="numeric"
               style={styles.input}
               onChangeText={(value) => onChangeInput('weight', value)}
@@ -74,24 +123,29 @@ const HomeScreen = () => {
           <View style={styles.inputContainer}>
             <Text style={styles.label}>Edad</Text>
             <TextInput
-              value={state.age}
+              value={age}
               keyboardType="numeric"
               style={styles.input}
               onChangeText={(value) => onChangeInput('age', value)}
             />
-            <Text style={styles.label}></Text>
+            <Text style={styles.label}>años</Text>
           </View>
           <View style={styles.inputContainer}>
             <Text style={styles.label}>Sexo</Text>
-            <SwitchableButtons value={state.gender} onChange={(value) => onChangeInput('gender', value)} />
+            <SwitchableButtons value={gender} onChange={(value) => onChangeInput('gender', value)} />
           </View>
 
-          <TouchableOpacity onPress={onSubmit}>
-            <Text>Calcular</Text>
-          </TouchableOpacity>
-          {state.result && state.result.result}
-        </SafeAreaView>
+          {error && <ErrorMessage message={error} />}
+
+          <Result {...result} />
+        </View>
       </TouchableWithoutFeedback>
+      <TouchableOpacity
+        style={styles.submitButton}
+        onPress={mustShowClear ? onClear : onSubmit}
+      >
+        <Text style={styles.buttonLabel}>{mustShowClear ? 'Limpiar' : 'Calcular'}</Text>
+      </TouchableOpacity>
     </KeyboardAvoidingView>
   );
 };
@@ -99,8 +153,11 @@ const HomeScreen = () => {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: '#66D7D1',
-    width: '100%',
-    height: '100%'
+    flex: 1,
+    justifyContent: 'flex-start',
+    flexDirection: 'column',
+    height: '100%',
+    position: 'relative',
   },
   header: {
     marginTop: 30,
@@ -130,6 +187,19 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     textAlign: 'center',
     fontFamily: 'TitilliumWeb_600SemiBold',
+  },
+  submitButton: {
+    backgroundColor: '#FF637D',
+    alignSelf: 'center',
+    position: 'absolute',
+    bottom: 30,
+    borderRadius: 10
+  },
+  buttonLabel: {
+    fontFamily: 'TitilliumWeb_600SemiBold',
+    fontSize: 28,
+    textAlignVertical: 'center',
+    padding: 10,
   }
 })
 
