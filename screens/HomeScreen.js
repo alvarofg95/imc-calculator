@@ -31,6 +31,13 @@ const reducer = (state, action) => {
       ...state,
       error: action.value,
     };
+  } else if (action.type === 'CLEAR') {
+    return initialState;
+  } else if (action.type === 'SHOW_ERROR') {
+    return {
+      ...state,
+      error: action.value,
+    };
   }
   return state;
 }
