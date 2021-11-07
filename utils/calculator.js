@@ -6,8 +6,14 @@ const BMI_TABLE = {
   overweight: 'Sobrepeso',
   moderateObesity: 'Obesidad moderada',
   severeObesity: 'Obesidad severa',
-  verySevereObesity: 'Obesidad muy severa(Obesidad mórbida)'
+  verySevereObesity: 'Obesidad muy severa'
 }
+
+const getBarColor = (bmiValue) => {
+  if (bmiValue < 16 || bmiValue >= 30) return 'red';
+  if (bmiValue > 16 && bmiValue < 18.6 || bmiValue > 25 && bmiValue < 30) return 'orange';
+  if (bmiValue > 18.5 && bmiValue < 25) return 'green';
+};
 
 const getResult = (value) => {
   let typeOfBMI = '';
@@ -42,6 +48,7 @@ export const calculateBmi = ({ height, weight }) => {
   const bmiValue = weightInt / (heightMeters * heightMeters);
   return {
     bmiValue,
-    result: getResult(bmiValue)
+    result: getResult(bmiValue),
+    barColor: getBarColor(bmiValue),
   }
 }
