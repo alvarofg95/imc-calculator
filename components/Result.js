@@ -30,15 +30,16 @@ const styles = StyleSheet.create({
     marginTop: 50
   },
   bmi: {
-    fontSize: 40,
-    textAlign: 'center',
-    marginTop: -40,
-    fontFamily: 'TitilliumWeb_600SemiBold',
-  },
-  resultText: {
     fontSize: 30,
     textAlign: 'center',
-    fontFamily: 'TitilliumWeb_600SemiBold',
+    paddingTop: 0,
+    fontWeight: 'bold',
+    color: '#FFF'
+  },
+  resultText: {
+    marginTop: 20,
+    fontSize: 30,
+    textAlign: 'center',
   }
 })
 

@@ -10,9 +10,9 @@ const BMI_TABLE = {
 }
 
 const getBarColor = (bmiValue) => {
-  if (bmiValue < 16 || bmiValue >= 30) return 'red';
+  if (bmiValue < 16 || bmiValue >= 30) return '#FF637D';
   if (bmiValue > 16 && bmiValue < 18.6 || bmiValue > 25 && bmiValue < 30) return 'orange';
-  if (bmiValue > 18.5 && bmiValue < 25) return 'green';
+  if (bmiValue > 18.5 && bmiValue < 25) return '#00a400';
 };
 
 const getResult = (value) => {

@@ -1,15 +1,27 @@
 import React, { useReducer } from 'react';
-import { Text, TextInput, TouchableOpacity, TouchableWithoutFeedback, View, StyleSheet, KeyboardAvoidingView, Keyboard } from 'react-native';
+import {
+  Image,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+  View,
+  StyleSheet,
+  KeyboardAvoidingView,
+  Keyboard,
+} from 'react-native';
 import ErrorMessage from '../components/ErrorMessage';
 import Result from '../components/Result';
-import SwitchableButtons from '../components/SwitchableButtons';
 import { calculateBmi } from '../utils/calculator';
+import infoIcon from '../assets/info.png'
+import reloadIcon from '../assets/reload.png'
+import CustomModal from '../components/CustomModal';
 
 const initialState = {
   age: null,
   height: null,
-  gender: null,
   weight: null,
+  modalVisible: false,
   result: {
     bmiValue: null,
     result: null,
@@ -38,15 +50,14 @@ const reducer = (state, action) => {
 const getErrorType = (height, weight) => {
   let errorType = '';
   if (!height) {
-    errorType = 'heightError';
+    errorType = 'Debes introducir la altura';
   }
   if (!weight) {
-    errorType = 'weightError';
+    errorType = 'Debes introducir el peso';
   }
   if (!height && !weight) {
-    errorType = 'heightAndWeightError';
+    errorType = 'Debes introducir la altura y el peso';
   }
-  console.log('ERROR TYPE', errorType)
   return errorType;
 }
 
@@ -76,6 +87,7 @@ const HomeScreen = () => {
         value: getErrorType(height, weight),
       });
     }
+    Keyboard.dismiss();
   }
 
   const onClear = () => {
@@ -84,22 +96,41 @@ const HomeScreen = () => {
     })
   }
 
+  const handleModal = () => {
+    dispatch({
+      type: 'CHANGE',
+      value: !state.modalVisible,
+      key: 'modalVisible',
+    });
+  }
+
   const {
     height,
     weight,
     age,
-    gender,
+    modalVisible,
     result,
     error,
   } = state;
-  const mustShowClear = !!result.bmiValue;
-  console.log('error', error);
+
   return (
     <KeyboardAvoidingView style={styles.container}>
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View>
-          <Text style={styles.header}>Calculadora IMC</Text>
-
+          <View style={styles.headerContainer}>
+            <TouchableOpacity
+              onPress={handleModal}
+            >
+              <Image source={infoIcon} style={styles.icon} />
+            </TouchableOpacity>
+            <Text style={styles.header}>Calculadora IMC</Text>
+            <TouchableOpacity
+              onPress={onClear}
+            >
+              <Image source={reloadIcon} style={styles.icon} />
+            </TouchableOpacity>
+          </View>
+          <CustomModal modalVisible={modalVisible} handleModal={handleModal} />
           <View style={styles.inputContainer}>
             <Text style={styles.label}>Altura*</Text>
             <TextInput
@@ -130,10 +161,6 @@ const HomeScreen = () => {
             />
             <Text style={styles.label}>años</Text>
           </View>
-          <View style={styles.inputContainer}>
-            <Text style={styles.label}>Sexo</Text>
-            <SwitchableButtons value={gender} onChange={(value) => onChangeInput('gender', value)} />
-          </View>
 
           {error && <ErrorMessage message={error} />}
 
@@ -142,9 +169,9 @@ const HomeScreen = () => {
       </TouchableWithoutFeedback>
       <TouchableOpacity
         style={styles.submitButton}
-        onPress={mustShowClear ? onClear : onSubmit}
+        onPress={onSubmit}
       >
-        <Text style={styles.buttonLabel}>{mustShowClear ? 'Limpiar' : 'Calcular'}</Text>
+        <Text style={styles.buttonLabel}>Calcular</Text>
       </TouchableOpacity>
     </KeyboardAvoidingView>
   );
@@ -152,54 +179,61 @@ const HomeScreen = () => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#66D7D1',
+    backgroundColor: '#65D2D76E',
     flex: 1,
     justifyContent: 'flex-start',
     flexDirection: 'column',
     height: '100%',
     position: 'relative',
   },
+  icon: {
+    width: 20,
+    height: 20,
+    marginTop: 12
+  },
+  headerContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    marginTop: 40,
+  },
   header: {
-    marginTop: 30,
-    marginBottom: 30,
-    fontSize: 40,
+    fontSize: 30,
     textAlign: 'center',
-    fontFamily: 'TitilliumWeb_600SemiBold',
-    color: '#F4F1BB',
+    color: '#FFF',
+    fontWeight: 'bold'
   },
   inputContainer: {
-    paddingTop: 30,
+    paddingTop: 40,
     flexDirection: 'row',
     justifyContent: 'space-around'
   },
   label: {
-    fontSize: 28,
-    fontFamily: 'TitilliumWeb_600SemiBold',
+    fontSize: 25,
     width: '35%',
     textAlign: 'center'
   },
   input: {
-    backgroundColor: '#F4F1BB',
+    backgroundColor: '#FFF',
     width: '30%',
     paddingLeft: 5,
     paddingRight: 5,
-    fontSize: 20,
+    fontSize: 25,
     borderRadius: 10,
     textAlign: 'center',
-    fontFamily: 'TitilliumWeb_600SemiBold',
   },
   submitButton: {
-    backgroundColor: '#FF637D',
+    backgroundColor: '#FFF',
     alignSelf: 'center',
     position: 'absolute',
     bottom: 30,
-    borderRadius: 10
+    borderRadius: 20,
+    width: 200
   },
   buttonLabel: {
-    fontFamily: 'TitilliumWeb_600SemiBold',
-    fontSize: 28,
+    fontSize: 25,
     textAlignVertical: 'center',
     padding: 10,
+    textAlign: 'center'
   }
 })
 
