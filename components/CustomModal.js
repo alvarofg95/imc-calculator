@@ -30,9 +30,9 @@ const CustomModal = ({ modalVisible = false, handleModal }) => {
 
 const styles = StyleSheet.create({
   modal: {
-    backgroundColor: "white",
+    backgroundColor: '#FFF',
     borderRadius: 14,
-    shadowColor: "#000",
+    shadowColor: '#000',
     shadowOffset: {
       width: 0,
       height: 2
@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
     shadowRadius: 14,
     elevation: 15,
     padding: 20,
-    marginTop: 30,
+    marginTop: '30%',
     width: '90%',
     marginRight: 'auto',
     marginLeft: 'auto'

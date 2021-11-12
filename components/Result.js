@@ -40,6 +40,8 @@ const styles = StyleSheet.create({
     marginTop: 20,
     fontSize: 30,
     textAlign: 'center',
+    color: '#FFF',
+    fontWeight: 'bold'
   }
 })
 

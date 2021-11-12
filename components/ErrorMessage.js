@@ -8,11 +8,11 @@ const ErrorMessage = ({ message }) => {
 
 const styles = StyleSheet.create({
   text: {
-    color: '#FF637D',
+    color: '#9C4B50',
     fontSize: 18,
     textAlign: 'center',
     marginTop: 30,
-    fontWeight: '900'
+    fontWeight: 'bold'
   }
 })
 

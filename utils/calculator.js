@@ -1,18 +1,42 @@
 const BMI_TABLE = {
-  severeThinness: 'Delgadez Severa',
-  slightThinness: 'Delgadez leve',
-  thinness: 'Delgadez',
-  healthyWeight: 'Peso saludable',
-  overweight: 'Sobrepeso',
-  moderateObesity: 'Obesidad moderada',
-  severeObesity: 'Obesidad severa',
-  verySevereObesity: 'Obesidad muy severa'
+  severeThinness: {
+    result: 'Delgadez Severa',
+    message: 'Deberías acudir a un nutricionista para ganar peso'
+  },
+  slightThinness: {
+    result: 'Delgadez leve',
+    message: 'Deberías acudir a un nutricionista para ganar peso'
+  },
+  thinness: {
+    result: 'Delgadez',
+    message: 'Te recomendamos que sigas una dieta para ganar un poco de peso'
+  },
+  healthyWeight: {
+    result: 'Peso saludable',
+    message: 'Estás en tu peso ideal, no olvides acompañarlo de ejercicio'
+  },
+  overweight: {
+    result: 'Sobrepeso',
+    message: 'Te recomendamos que sigas una dieta y ejercicio para bajar un poco de peso'
+  },
+  moderateObesity: {
+    result: 'Obesidad moderada',
+    message: 'Te recomendamos que sigas una dieta y ejercicio para bajar de peso'
+  },
+  severeObesity: {
+    result: 'Obesidad severa',
+    message: 'Deberías acudir a un nutricionista para bajar de peso y acompañarlo con ejercicio'
+  },
+  verySevereObesity: {
+    result: 'Obesidad muy severa',
+    message: 'Deberías acudir a un nutricionista para bajar de peso y acompañarlo con ejercicio'
+  }
 }
 
 const getBarColor = (bmiValue) => {
   if (bmiValue < 16 || bmiValue >= 30) return '#FF637D';
   if (bmiValue > 16 && bmiValue < 18.6 || bmiValue > 25 && bmiValue < 30) return 'orange';
-  if (bmiValue > 18.5 && bmiValue < 25) return '#00a400';
+  if (bmiValue > 18.5 && bmiValue < 25) return '#7be382';
 };
 
 const getResult = (value) => {
@@ -48,7 +72,7 @@ export const calculateBmi = ({ height, weight }) => {
   const bmiValue = weightInt / (heightMeters * heightMeters);
   return {
     bmiValue,
-    result: getResult(bmiValue),
+    ...getResult(bmiValue),
     barColor: getBarColor(bmiValue),
   }
 }

@@ -114,7 +114,7 @@ const HomeScreen = () => {
   } = state;
 
   return (
-    <KeyboardAvoidingView style={styles.container}>
+    <KeyboardAvoidingView style={modalVisible ? { ...styles.container, ...styles.opacity } : styles.container}>
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View>
           <View style={styles.headerContainer}>
@@ -165,6 +165,7 @@ const HomeScreen = () => {
           {error && <ErrorMessage message={error} />}
 
           <Result {...result} />
+          <Text style={styles.message}>{result.message || 'Consulta cuál es tu Índice de Masa Corporal'}</Text>
         </View>
       </TouchableWithoutFeedback>
       <TouchableOpacity
@@ -179,12 +180,15 @@ const HomeScreen = () => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#65D2D76E',
+    backgroundColor: '#42a3ab',
     flex: 1,
     justifyContent: 'flex-start',
     flexDirection: 'column',
     height: '100%',
     position: 'relative',
+  },
+  opacity: {
+    opacity: 0.6,
   },
   icon: {
     width: 20,
@@ -234,6 +238,16 @@ const styles = StyleSheet.create({
     textAlignVertical: 'center',
     padding: 10,
     textAlign: 'center'
+  },
+  message: {
+    textAlign: 'center',
+    fontSize: 25,
+    // fontWeight: 'bold',
+    color: '#FFF',
+    marginTop: -60,
+    width: '90%',
+    marginLeft: 'auto',
+    marginRight: 'auto'
   }
 })
 
