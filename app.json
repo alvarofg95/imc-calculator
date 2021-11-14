@@ -24,7 +24,8 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
       },
-      "package": "com.alvarofg95.imccalculator"
+      "package": "com.alvarofg95.imccalculator",
+      "permissions": ["CAMERA", "READ_PHONE_STATE", "READ_CONTACTS", "RECORD_AUDIO"]
     },
     "web": {
       "favicon": "./assets/favicon.png"
